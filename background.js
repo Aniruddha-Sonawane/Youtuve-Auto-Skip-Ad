@@ -1,4 +1,4 @@
-﻿const attachedTabs = new Set();
+﻿const activeTabs = new Set();
 
 chrome.runtime.onMessage.addListener((message, sender) => {
     if (
@@ -10,13 +10,13 @@ chrome.runtime.onMessage.addListener((message, sender) => {
         return;
     }
 
-    clickAt(sender.tab.id, message.x, message.y);
+    clickSkip(sender.tab.id, message.x, message.y);
 });
 
-async function clickAt(tabId, x, y) {
-    if (attachedTabs.has(tabId)) return;
+async function clickSkip(tabId, x, y) {
+    if (activeTabs.has(tabId)) return;
 
-    attachedTabs.add(tabId);
+    activeTabs.add(tabId);
 
     const target = { tabId };
 
@@ -59,22 +59,18 @@ async function clickAt(tabId, x, y) {
             }
         );
 
-        console.log("[YouTube Auto Skip] Mouse click sent.");
-
     } catch (error) {
         console.error("[YouTube Auto Skip]", error);
-
-    } finally {
-        try {
-            await chrome.debugger.detach(target);
-        } catch {}
-
-        attachedTabs.delete(tabId);
     }
+
+    // Detach immediately after the click.
+    try {
+        await chrome.debugger.detach(target);
+    } catch {}
+
+    activeTabs.delete(tabId);
 }
 
-chrome.debugger.onDetach.addListener((source) => {
-    if (source.tabId) {
-        attachedTabs.delete(source.tabId);
-    }
+chrome.debugger.onDetach.addListener(({ tabId }) => {
+    activeTabs.delete(tabId);
 });

@@ -1,9 +1,10 @@
 ﻿(() => {
     "use strict";
 
-    let lastDetection = 0;
+    let cooldownUntil = 0;
+    let lastButton = null;
 
-    function findSkip() {
+    function findSkipButton() {
         const buttons = document.querySelectorAll(
             "button.ytp-skip-ad-button"
         );
@@ -16,9 +17,11 @@
                 rect.width > 0 &&
                 rect.height > 0 &&
                 style.display !== "none" &&
-                style.visibility !== "hidden"
+                style.visibility !== "hidden" &&
+                style.pointerEvents !== "none"
             ) {
                 return {
+                    button,
                     x: rect.left + rect.width / 2,
                     y: rect.top + rect.height / 2
                 };
@@ -28,23 +31,34 @@
         return null;
     }
 
-    setInterval(() => {
+    function check() {
         const now = Date.now();
 
-        if (now - lastDetection < 1000) return;
+        if (now < cooldownUntil) return;
 
-        const point = findSkip();
+        const result = findSkipButton();
 
-        if (!point) return;
+        if (!result) {
+            lastButton = null;
+            return;
+        }
 
-        lastDetection = now;
+        // Don't repeatedly click the same Skip button.
+        if (result.button === lastButton) return;
 
-        console.log("[YouTube Auto Skip] Skip detected:", point);
+        lastButton = result.button;
+
+        // Give YouTube a moment to finish activating the button.
+        cooldownUntil = now + 5000;
+
+        console.log("[YouTube Auto Skip] Skip detected.");
 
         chrome.runtime.sendMessage({
             type: "CLICK_SKIP",
-            x: point.x,
-            y: point.y
+            x: result.x,
+            y: result.y
         });
-    }, 100);
+    }
+
+    setInterval(check, 100);
 })();
