@@ -10,10 +10,10 @@ chrome.runtime.onMessage.addListener((message, sender) => {
         return;
     }
 
-    clickSkip(sender.tab.id, message.x, message.y);
+    clickAt(sender.tab.id, message.x, message.y);
 });
 
-async function clickSkip(tabId, x, y) {
+async function clickAt(tabId, x, y) {
     if (activeTabs.has(tabId)) return;
 
     activeTabs.add(tabId);
@@ -59,16 +59,18 @@ async function clickSkip(tabId, x, y) {
             }
         );
 
+        console.log("[YouTube Auto Skip] Physical click sent.");
+
     } catch (error) {
         console.error("[YouTube Auto Skip]", error);
+
+    } finally {
+        try {
+            await chrome.debugger.detach(target);
+        } catch {}
+
+        activeTabs.delete(tabId);
     }
-
-    // Detach immediately after the click.
-    try {
-        await chrome.debugger.detach(target);
-    } catch {}
-
-    activeTabs.delete(tabId);
 }
 
 chrome.debugger.onDetach.addListener(({ tabId }) => {

@@ -1,0 +1,134 @@
+﻿* {
+    box-sizing: border-box;
+}
+
+body {
+    width: 330px;
+    margin: 0;
+    padding: 18px;
+    background: #111111;
+    color: #ffffff;
+    font-family: Arial, sans-serif;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 22px;
+}
+
+.logo {
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    background: #ff0000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+}
+
+.title {
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.subtitle {
+    margin-top: 3px;
+    color: #999999;
+    font-size: 12px;
+}
+
+.section-title {
+    color: #888888;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    margin-bottom: 9px;
+}
+
+.mode {
+    width: 100%;
+    border: 1px solid #333333;
+    border-radius: 12px;
+    background: #181818;
+    color: white;
+    padding: 13px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    text-align: left;
+    cursor: pointer;
+}
+
+.mode:hover {
+    background: #202020;
+}
+
+.mode.active {
+    border-color: #ff0000;
+    background: #211414;
+}
+
+.radio {
+    width: 15px;
+    height: 15px;
+    border: 2px solid #777777;
+    border-radius: 50%;
+    margin-top: 2px;
+    flex-shrink: 0;
+}
+
+.mode.active .radio {
+    border: 4px solid #ff0000;
+}
+
+.mode-content {
+    flex: 1;
+}
+
+.mode-title {
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+.mode-description {
+    color: #aaaaaa;
+    font-size: 11px;
+    line-height: 1.4;
+}
+
+.status {
+    color: #55d66b;
+    font-size: 9px;
+    font-weight: 700;
+    margin-top: 7px;
+}
+
+.status.experimental {
+    color: #e7b84b;
+}
+
+.divider {
+    height: 1px;
+    background: #292929;
+    margin: 16px 0;
+}
+
+.footer {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    color: #aaaaaa;
+    font-size: 11px;
+}
+
+.dot {
+    width: 7px;
+    height: 7px;
+    background: #55d66b;
+    border-radius: 50%;
+}

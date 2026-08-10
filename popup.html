@@ -1,0 +1,53 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>YouTube Auto Skip</title>
+    <link rel="stylesheet" href="popup.css">
+</head>
+
+<body>
+
+<div class="header">
+    <div class="logo">▶</div>
+    <div>
+        <div class="title">YouTube Auto Skip</div>
+        <div class="subtitle">Ad control</div>
+    </div>
+</div>
+
+<div class="section-title">MODE</div>
+
+<button class="mode active" id="autoSkip">
+    <div class="radio"></div>
+    <div class="mode-content">
+        <div class="mode-title">Auto Skip</div>
+        <div class="mode-description">
+            Automatically clicks Skip as soon as it appears.
+        </div>
+        <div class="status">● WORKING</div>
+    </div>
+</button>
+
+<button class="mode" id="adKiller">
+    <div class="radio"></div>
+    <div class="mode-content">
+        <div class="mode-title">Ad Killer</div>
+        <div class="mode-description">
+            Experimental mode for removing ads without waiting for Skip.
+        </div>
+        <div class="status experimental">● EXPERIMENTAL</div>
+    </div>
+</button>
+
+<div class="divider"></div>
+
+<div class="footer">
+    <span class="dot"></span>
+    <span id="statusText">Auto Skip active</span>
+</div>
+
+<script src="popup.js"></script>
+
+</body>
+</html>

@@ -1,11 +1,16 @@
 ﻿{
   "manifest_version": 3,
   "name": "YouTube Auto Skip",
-  "version": "2.0.0",
-  "description": "Automatically clicks YouTube Skip buttons.",
+  "version": "4.0.0",
+  "description": "YouTube ad control with selectable modes.",
   "permissions": [
-    "debugger"
+    "debugger",
+    "storage"
   ],
+  "action": {
+    "default_title": "YouTube Auto Skip",
+    "default_popup": "popup.html"
+  },
   "background": {
     "service_worker": "background.js"
   },
