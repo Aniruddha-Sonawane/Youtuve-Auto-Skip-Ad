@@ -1,27 +1,79 @@
-﻿const autoSkip = document.getElementById("autoSkip");
-const adKiller = document.getElementById("adKiller");
-const statusText = document.getElementById("statusText");
+﻿document.addEventListener("DOMContentLoaded", async () => {
 
-function setMode(mode) {
-    chrome.storage.local.set({ mode });
+    const buttons =
+        document.querySelectorAll(".mode");
 
-    autoSkip.classList.toggle("active", mode === "auto_skip");
-    adKiller.classList.toggle("active", mode === "ad_killer");
+    const counter =
+        document.getElementById("adsKilled");
 
-    statusText.textContent =
-        mode === "auto_skip"
-            ? "Auto Skip active"
-            : "Ad Killer selected";
-}
+    const reset =
+        document.getElementById("resetCounter");
 
-chrome.storage.local.get("mode", result => {
-    setMode(result.mode || "auto_skip");
-});
+    async function updateCounter() {
 
-autoSkip.addEventListener("click", () => {
-    setMode("auto_skip");
-});
+        const result =
+            await chrome.storage.local.get({
+                adsKilled: 0
+            });
 
-adKiller.addEventListener("click", () => {
-    setMode("ad_killer");
+        counter.textContent =
+            Number(result.adsKilled || 0).toLocaleString();
+    }
+
+    const result =
+        await chrome.storage.local.get({
+            mode: "auto_skip"
+        });
+
+    for (const button of buttons) {
+
+        if (
+            button.dataset.mode ===
+            result.mode
+        ) {
+            button.classList.add("active");
+        }
+
+        button.addEventListener(
+            "click",
+            async () => {
+
+                await chrome.storage.local.set({
+                    mode: button.dataset.mode
+                });
+
+                for (const other of buttons) {
+                    other.classList.remove("active");
+                }
+
+                button.classList.add("active");
+            }
+        );
+    }
+
+    reset.addEventListener(
+        "click",
+        async () => {
+
+            await chrome.storage.local.set({
+                adsKilled: 0
+            });
+
+            updateCounter();
+        }
+    );
+
+    await updateCounter();
+
+    chrome.storage.onChanged.addListener(
+        (changes, area) => {
+
+            if (
+                area === "local" &&
+                changes.adsKilled
+            ) {
+                updateCounter();
+            }
+        }
+    );
 });
