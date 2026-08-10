@@ -1,12 +1,28 @@
 ﻿{
   "manifest_version": 3,
   "name": "YouTube Auto Skip",
-  "version": "4.0.0",
-  "description": "YouTube ad control with selectable modes.",
+  "version": "5.0.0",
+  "description": "YouTube ad control with Auto Skip, Ad Killer and Ultimate modes.",
   "permissions": [
     "debugger",
-    "storage"
+    "storage",
+    "declarativeNetRequest"
   ],
+  "host_permissions": [
+    "*://*.youtube.com/*",
+    "*://*.googleadservices.com/*",
+    "*://*.googlesyndication.com/*",
+    "*://*.doubleclick.net/*"
+  ],
+  "declarative_net_request": {
+    "rule_resources": [
+      {
+        "id": "youtube_ads",
+        "enabled": true,
+        "path": "rules.json"
+      }
+    ]
+  },
   "action": {
     "default_title": "YouTube Auto Skip",
     "default_popup": "popup.html"
@@ -16,8 +32,13 @@
   },
   "content_scripts": [
     {
-      "matches": ["*://www.youtube.com/*"],
-      "js": ["content.js"],
+      "matches": [
+        "*://www.youtube.com/*",
+        "*://youtube.com/*"
+      ],
+      "js": [
+        "content.js"
+      ],
       "run_at": "document_idle"
     }
   ]
