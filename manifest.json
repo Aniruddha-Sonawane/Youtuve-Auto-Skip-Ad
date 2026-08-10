@@ -1,0 +1,19 @@
+﻿{
+  "manifest_version": 3,
+  "name": "YouTube Auto Skip",
+  "version": "2.0.0",
+  "description": "Automatically clicks YouTube Skip buttons.",
+  "permissions": [
+    "debugger"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["*://www.youtube.com/*"],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ]
+}
